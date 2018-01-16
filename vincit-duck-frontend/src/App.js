@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Grid, Table } from 'react-bootstrap';
 import Header from './components/Header';
 import SightingsInfo from './components/SightingsInfo';
+import Home from './components/Home';
 import axios from 'axios';
 
 
@@ -32,6 +32,7 @@ class App extends Component {
     return (
       <div>
         <Header />
+        <Home />
         <SightingsInfo />
       </div>
     );
