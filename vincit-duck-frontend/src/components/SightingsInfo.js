@@ -17,11 +17,7 @@ class SightingsInfo extends Component{
           const sights = res.data;
           this.setState({ sightings : sights });
         });
-        axios.get("http://localhost:8081/species")
-        .then(res => {
-          const specy = res.data;
-          this.setState({ species : specy });
-        });   
+           
       }
 
     render(){

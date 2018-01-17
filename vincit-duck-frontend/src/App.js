@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/Header';
 import SightingsInfo from './components/SightingsInfo';
 import Home from './components/Home';
+import AddSighting from './components/AddSighting';
 import axios from 'axios';
 
 
@@ -32,6 +33,7 @@ class App extends Component {
     return (
       <div>
         <Header />
+        <AddSighting />
         <Home />
         <SightingsInfo />
       </div>
