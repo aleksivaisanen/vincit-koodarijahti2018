@@ -7,7 +7,7 @@ class Home extends Component{
         
         return(
             <Grid>
-                <h1>Ankkabongaus 2018</h1>
+                <h1>Vincit Duck Hunt 2018</h1>
                 <Row>
                     <Col xs={12} md={8}>
                     Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 

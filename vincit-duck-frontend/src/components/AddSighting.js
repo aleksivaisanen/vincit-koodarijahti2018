@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, FormGroup, Button, FormControl, ControlLabel } from 'react-bootstrap';
 import "../../node_modules/react-datetime/css/react-datetime.css";
+import moment from 'moment';
 import * as Datetime from 'react-datetime';
 import '../App.css'     
 import axios from 'axios';
@@ -35,14 +36,10 @@ class AddSighting extends Component{
         const target = event.target;
         const name = target.name;
         const value = target.value
+        
         this.setState({
             [name]:value
-            
         });
-        console.log(this.state.description);
-        console.log(this.state.selectedSpecies);
-        console.log(this.state.count);
-        console.log(this.state.time);
     }
     handleOptionChange(event){
         this.setState({
@@ -50,21 +47,33 @@ class AddSighting extends Component{
         });
     }
     handleDate(date){
-        require('moment');
-        date = date.format();
-        this.setState({time:date});
-        console.log(this.state.time);
+        const newDate = moment(date).format();
+        this.setState({time:newDate});
     }
     handleSubmit(event){
         event.preventDefault();
-        axios.post('http://localhost:8081/sightings',
-        {
-            species: this.state.selectedSpecies,
-            description: this.state.description,
-            dateTime: this.state.time,
-            count: this.state.count
+        if(this.state.description !== '' && this.state.count > 0 && moment(this.state.time).isValid()){
+        
+            axios.post('http://localhost:8081/sightings',
+            {
+                species: this.state.selectedSpecies,
+                description: this.state.description,
+                dateTime: moment(this.state.time).format(),
+                count: this.state.count
+            });
+
+            this.setState({
+                selectedSpecies : 'mallard',
+                description: '',
+                time: '',
+                count: ''
+            });
+
+            document.getElementById('form').reset();
+        
+        }else{
+            alert('Invalid values, please try again!')
         }
-    );
     }
 
     render(){
@@ -74,7 +83,7 @@ class AddSighting extends Component{
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <form onSubmit={this.handleSubmit}>
+                        <form id="form" onSubmit={this.handleSubmit}>
                             <FormGroup
                                 controlId="addSightingForm"
                             >
@@ -86,6 +95,7 @@ class AddSighting extends Component{
                                     type="text"
                                     placeholder="Enter description"
                                     onChange={this.handleChange}
+
                                 /> 
                                 <br />
                                 <ControlLabel>Species</ControlLabel>
@@ -93,10 +103,10 @@ class AddSighting extends Component{
                                 
                                 {this.state.species.map(function(specie){
                                     return (
-                                        <label key={specie.name}>
+                                        <label className='speciesLabel' key={specie.name}>
                                             <input 
+                                                className='speciesInput'
                                                 type='radio'
-                                                 
                                                 name='selectedSpecies'
                                                 checked = {this.state.selectedSpecies === specie.name}
                                                 onChange ={this.handleOptionChange}
@@ -112,15 +122,15 @@ class AddSighting extends Component{
                                 <ControlLabel>Count</ControlLabel>
                                 <FormControl
                                     name='count' 
-                                    type="text"
+                                    type="number"
                                     placeholder="Enter the count"
                                     onChange={this.handleChange}
                                     />
 
                                 <br />
                                 <ControlLabel>Time</ControlLabel>
-
-                                <Datetime onChange={this.handleDate} inputProps={{placeholder: 'Choose a time' , readOnly:true }}/> 
+                                {/*tämä täytyy saada kuntoon */}
+                                <Datetime id="datetime" defaultValue='' onChange={this.handleDate} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
                                 <br />
                                 <Button type="submit">Send sighting</Button>         
                             </FormGroup>

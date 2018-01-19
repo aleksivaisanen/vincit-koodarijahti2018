@@ -7,3 +7,11 @@
 .rdtTimeToggle{
     background-color: #f3f3f3 !important;
 }
+.speciesLabel{
+    font-weight: normal;
+    margin-right:10px;
+}
+
+.speciesInput{
+    margin-right:5px !important;
+}
