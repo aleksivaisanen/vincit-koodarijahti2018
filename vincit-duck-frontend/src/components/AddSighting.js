@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, FormGroup, Button, FormControl, ControlLabel, HelpBlock, Radio } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup, Button, FormControl, ControlLabel, Radio } from 'react-bootstrap';
+import "../../node_modules/react-datetime/css/react-datetime.css";
+import * as Datetime from 'react-datetime';     
 import axios from 'axios';
 
 class AddSighting extends Component{
@@ -21,6 +23,8 @@ class AddSighting extends Component{
     
 
     render(){
+        require('react-datetime');
+        require('moment/locale/fi');
         return(
             <Grid>
                 <Row>
@@ -28,7 +32,6 @@ class AddSighting extends Component{
                         <form>
                             <FormGroup
                                 controlId="addSightingForm"
-                                validationState='null'
                             >
                                 <h1>Add sighting</h1>
 
@@ -42,9 +45,14 @@ class AddSighting extends Component{
                                 
                                 {this.state.species.map(function(specie){
                                     return (
-                                        <Radio name="radioGroup">{specie.name}</Radio>        
+                                        <Radio key={specie.name} name="radioGroup">{specie.name}</Radio>        
                                     )
-                                })} 
+                                })}
+
+                                <ControlLabel>Time</ControlLabel>
+
+                                <Datetime /> 
+                                <br />
                                 <Button type='submit'>Send sighting</Button>          
                             </FormGroup>
                         </form>

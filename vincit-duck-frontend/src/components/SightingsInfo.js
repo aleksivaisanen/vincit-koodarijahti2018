@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Grid, Row, Col, Table } from 'react-bootstrap'
+import moment from 'moment';
 
 class SightingsInfo extends Component{
     constructor(props){
@@ -21,6 +22,7 @@ class SightingsInfo extends Component{
       }
 
     render(){
+        require('moment/locale/fi');
         return(
             <Grid>
                 <h1>Vincitin ankkabongaus 2018</h1>
@@ -43,7 +45,7 @@ class SightingsInfo extends Component{
                             <td key={sight.id}>{sight.id}</td>
                             <td key={sight.id + sight.id.species}>{sight.species}</td>
                             <td key={sight.id + sight.description}>{sight.description}</td>
-                            <td key={sight.id + sight.dateTime}>{sight.dateTime}</td>
+                            <td key={sight.id + sight.dateTime}>{moment(sight.dateTime).utc().format('MMMM Do YYYY, HH:mm:ss')}</td>
                             <td key={sight.id + sight.count}>{sight.count}</td>
                             </tr>)
                         })}
