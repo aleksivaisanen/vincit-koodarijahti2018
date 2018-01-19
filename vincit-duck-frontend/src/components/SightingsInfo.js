@@ -45,7 +45,7 @@ class SightingsInfo extends Component{
                             <td key={sight.id}>{sight.id}</td>
                             <td key={sight.id + sight.id.species}>{sight.species}</td>
                             <td key={sight.id + sight.description}>{sight.description}</td>
-                            <td key={sight.id + sight.dateTime}>{moment(sight.dateTime).utc().format('MMMM Do YYYY, HH:mm:ss')}</td>
+                            <td key={sight.id + sight.dateTime}>{moment(sight.dateTime).utc().format('MMMM Do YYYY, HH:mm')}</td>
                             <td key={sight.id + sight.count}>{sight.count}</td>
                             </tr>)
                         })}
