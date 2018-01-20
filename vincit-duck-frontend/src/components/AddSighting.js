@@ -35,10 +35,20 @@ class AddSighting extends Component{
     handleChange(event){
         const target = event.target;
         const name = target.name;
-        const value = target.value
+        const value = target.value;
+
+        {/* fix this*/}
+        if(name === 'count' && this.state.count.length >= 4){
+            alert('Please insert a number betweeen 0 and 9999');
+        }
+        else if(name === 'description' && this.state.description.length >= 200){
+            alert('Maximum length of description is 200 characters!')
+        }
+        else{
         this.setState({
             [name]:value
         });
+    }
     }
     handleOptionChange(event){
         this.setState({
@@ -47,6 +57,15 @@ class AddSighting extends Component{
     }
     handleDate(date){
         this.setState({time : date});
+    }
+    handleReset = (e) =>{
+        this.setState({
+            selectedSpecies : 'mallard',
+            description: '',
+            time: '',
+            count: ''
+        });
+        e.target.reset();
     }
     handleSubmit(event){
         event.preventDefault();
@@ -82,7 +101,9 @@ class AddSighting extends Component{
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <form onSubmit={this.handleSubmit}>
+                        <form 
+                        onSubmit={this.handleSubmit}
+                        onReset={this.handleReset}>
                             <FormGroup
                                 controlId="addSightingForm"
                             >
@@ -122,6 +143,7 @@ class AddSighting extends Component{
                                 <FormControl
                                     name='count' 
                                     type="number"
+                                    maxLength='6'
                                     placeholder="Enter the count"
                                     onChange={this.handleChange}
                                     />
@@ -131,7 +153,8 @@ class AddSighting extends Component{
                                 
                                 <Datetime onChange={this.handleDate} value= {this.state.time} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
                                 <br />
-                                <Button type="submit">Send sighting</Button>         
+                                <Button type="submit">Send sighting</Button>
+                                <Button type="reset">Reset</Button>         
                             </FormGroup>
                         </form>
                     </Col>
