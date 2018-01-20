@@ -36,7 +36,6 @@ class AddSighting extends Component{
         const target = event.target;
         const name = target.name;
         const value = target.value
-        
         this.setState({
             [name]:value
         });
@@ -46,9 +45,8 @@ class AddSighting extends Component{
             selectedSpecies:event.target.value
         });
     }
-    handleDate(date){
-        const newDate = moment(date).format();
-        this.setState({time:newDate});
+    handleDate(e){
+        this.setState({time : e});
     }
     handleSubmit(event){
         event.preventDefault();
@@ -69,7 +67,8 @@ class AddSighting extends Component{
                 count: ''
             });
 
-            document.getElementById('form').reset();
+            event.target.reset();
+            
         
         }else{
             alert('Invalid values, please try again!')
@@ -130,7 +129,7 @@ class AddSighting extends Component{
                                 <br />
                                 <ControlLabel>Time</ControlLabel>
                                 {/*tämä täytyy saada kuntoon */}
-                                <Datetime id="datetime" defaultValue='' onChange={this.handleDate} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
+                                <Datetime onChange={this.handleDate} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
                                 <br />
                                 <Button type="submit">Send sighting</Button>         
                             </FormGroup>
