@@ -45,8 +45,8 @@ class AddSighting extends Component{
             selectedSpecies:event.target.value
         });
     }
-    handleDate(e){
-        this.setState({time : e});
+    handleDate(date){
+        this.setState({time : date});
     }
     handleSubmit(event){
         event.preventDefault();
@@ -82,7 +82,7 @@ class AddSighting extends Component{
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <form id="form" onSubmit={this.handleSubmit}>
+                        <form onSubmit={this.handleSubmit}>
                             <FormGroup
                                 controlId="addSightingForm"
                             >
@@ -128,8 +128,8 @@ class AddSighting extends Component{
 
                                 <br />
                                 <ControlLabel>Time</ControlLabel>
-                                {/*tämä täytyy saada kuntoon */}
-                                <Datetime onChange={this.handleDate} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
+                                
+                                <Datetime onChange={this.handleDate} value= {this.state.time} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
                                 <br />
                                 <Button type="submit">Send sighting</Button>         
                             </FormGroup>
