@@ -105,7 +105,7 @@ class AddSighting extends Component{
                                     </Alert>
             });
         }
-        else if(/[^a-zA-Z0-9\-\!\?\,\.]/.test(this.state.description)){
+        else if(/[^a-zA-Z0-9-!?,.]/.test(this.state.description)){
             this.setState({ descriptionValidation : 'error',
                             alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
                                     <p>Description can only contain alphanumeric characters or special characters <b>- ! ? , .</b></p>
