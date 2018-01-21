@@ -84,6 +84,9 @@ class AddSighting extends Component{
 
     /*handling all the input errors and giving the user feedback of their possible mistakes*/
     handleSubmit(event){
+        this.setState({
+            alert:''
+        });
         event.preventDefault();
         /*description can't be empty, duck count has to be over 0 and date can't be in the future  */
         if(this.state.selectedSpecies === ''){
@@ -146,6 +149,14 @@ class AddSighting extends Component{
                             </Alert>
                     });
                 }
+                this.setState({
+                    selectedSpecies : '',
+                    description: '',
+                    time: '',
+                    count: ''
+                });
+    
+                event.target.reset();
                 console.log(response);
             }.bind(this))
             .catch(function (error) {
@@ -156,15 +167,6 @@ class AddSighting extends Component{
                 });
                 console.log(error)
             }.bind(this));
-
-            this.setState({
-                selectedSpecies : 'mallard',
-                description: '',
-                time: '',
-                count: ''
-            });
-
-            event.target.reset();
         }
     }
 
