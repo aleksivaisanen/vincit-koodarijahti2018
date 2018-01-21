@@ -17,7 +17,9 @@ class AddSighting extends Component{
             time : '',
             species : [],
             alert : '',
-            alertVisible : true
+            descriptionValidation : null,
+            dateTimeValidation : null,
+            countValidation : null
         };
         
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,17 +43,31 @@ class AddSighting extends Component{
         const value = target.value;
 
         this.setState({
-            [name]:value
+            [name]:value,
+            alert:'',
+            descriptionValidation : null,
+            dateTimeValidation : null,
+            countValidation : null
         });
     
     }
     handleOptionChange(event){
         this.setState({
-            selectedSpecies:event.target.value
+            selectedSpecies:event.target.value,
+            alert: ''
         });
+        for(const item of document.getElementsByClassName('speciesLabel')){
+            item.className='speciesLabel'
+        }
+        
     }
     handleDate(date){
-        this.setState({time : date});
+        if(moment(date).isValid()){
+            this.setState({time : date});
+        }
+        else{
+            alert('Something went wrong with the date, please try again!');
+        }
     }
     handleReset = (e) =>{
         this.setState({
@@ -63,14 +79,58 @@ class AddSighting extends Component{
         e.target.reset();
     }
     handleAlertDismiss(){
-        this.setState({ alertVisible : false });
+        this.setState({ alert : '' });
     }
 
+    /*handling all the input errors and giving the user feedback of their possible mistakes*/
     handleSubmit(event){
         event.preventDefault();
         /*description can't be empty, duck count has to be over 0 and date can't be in the future  */
-        if(this.state.selectedSpecies !== '' && this.state.description !== '' && this.state.count > 0 && moment(this.state.time).isValid() && this.state.time < new Date()){
+        if(this.state.selectedSpecies === ''){
+            const list = document.getElementsByClassName('speciesLabel');
+            for(const item of list){
+                item.className='speciesLabel errorLabel'
+                console.log(item.className)
+            }
+            this.setState({
+                alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                        <p>Please choose a species!</p>
+                    </Alert>
+            });
+        } 
+        else if(this.state.description === ''){
+            this.setState({ descriptionValidation : 'error',
+                            alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                                    <p>Description can't be empty!</p>
+                                    </Alert>
+            });
+        }
+        else if(/[^a-zA-Z0-9\-\!\?\,\.]/.test(this.state.description)){
+            this.setState({ descriptionValidation : 'error',
+                            alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                                    <p>Description can only contain alphanumeric characters or special characters <b>- ! ? , .</b></p>
+                                    </Alert>
+            });
+        }
+        else if(this.state.time > new Date()){
+            console.log(this.state.time < new Date())
+            this.setState({
+                dateTimeValidation:'error',
+                alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                                    <p>Please check your date, date can't be in the future!</p>
+                                    </Alert>
+            })
+        } 
+        else if(this.state.count <= 0){
+            this.setState({
+                countValidation:'error',
+                alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                                    <p>Count can't be less or equals to 0.</p>
+                                    </Alert>
+            })
+        }  
         
+        else{
             axios.post('http://localhost:8081/sightings',
             {
                 species: this.state.selectedSpecies,
@@ -89,8 +149,13 @@ class AddSighting extends Component{
                 console.log(response);
             }.bind(this))
             .catch(function (error) {
-                console.log(error);
-            });
+                this.setState({
+                    alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                            <p>Something went wrong, please try again.</p>
+                        </Alert>
+                });
+                console.log(error)
+            }.bind(this));
 
             this.setState({
                 selectedSpecies : 'mallard',
@@ -100,15 +165,20 @@ class AddSighting extends Component{
             });
 
             event.target.reset();
-            
-        
-        }else{
-            alert('Invalid values, please try again!')
         }
     }
 
+    
+
     render(){
         require('moment/locale/fi');
+        
+        /*this disables all the future dates from date picker*/
+        var today = Datetime.moment();
+        var valid = function( current ){
+            return current.isBefore( today );
+        };
+
         return(
             <Grid>
                 <Row>
@@ -116,13 +186,8 @@ class AddSighting extends Component{
                         <form 
                         onSubmit={this.handleSubmit}
                         onReset={this.handleReset}>
-                            <FormGroup
-                                controlId="addSightingForm"
-                            >
-                                <h1>Add a sighting</h1>
-
-                                
-                                <br />
+                            <h1>Add a sighting</h1>
+                            <FormGroup>
                                 <ControlLabel>Species</ControlLabel>
                                 <br />
                                 {/*Valid species are fetched from the server and presented as radio buttons.*/}
@@ -137,28 +202,27 @@ class AddSighting extends Component{
                                                 onChange ={this.handleOptionChange}
                                                 value = {specie.name}
                                                 />
-                                                {specie.name.charAt(0).toUpperCase() + specie.name.substring(1, specie.name.length)}
-                                                        
+                                                {specie.name.charAt(0).toUpperCase() + specie.name.substring(1, specie.name.length)}         
                                         </label>
                                     )
                                 }.bind(this))}
-                                <br />
-                                <br />
-                                <ControlLabel>Count</ControlLabel>
-                                <FormControl
-                                    name='count' 
-                                    type="number"
-                                    min='1'
-                                    max='999'
-                                    placeholder="Enter the count"
-                                    onChange={this.handleChange}
-                                    />
-
-                                <br />
+                            </FormGroup>
+                            <FormGroup validationState={this.state.countValidation}>
+                            <ControlLabel>Count</ControlLabel>
+                            <FormControl
+                                name='count' 
+                                type="number"
+                                min='1'
+                                max='999'
+                                placeholder="Enter the count"
+                                onChange={this.handleChange}
+                                />
+                            </FormGroup>    
+                            <FormGroup validationState={this.state.dateTimeValidation}>
                                 <ControlLabel>Time</ControlLabel>
-                                
-                                <Datetime onChange={this.handleDate} value= {this.state.time} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
-                                <br />
+                                <Datetime onChange={this.handleDate} value= {this.state.time} isValidDate={valid} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
+                            </FormGroup>
+                            <FormGroup validationState={this.state.descriptionValidation}>
                                 <ControlLabel>Description</ControlLabel>
                                 <FormControl
                                     name='description'
@@ -166,15 +230,13 @@ class AddSighting extends Component{
                                     type="text"
                                     placeholder="Enter description"
                                     onChange={this.handleChange}
-
-                                /> 
-                                <br />
-
-                                <Button type="submit">Send sighting</Button>
-                                <span> </span>
-                                <Button type="reset">Reset</Button>         
-                            </FormGroup>
+                                />
+                            </FormGroup> 
+                            <Button type="submit">Send sighting</Button>
+                            <span> </span>
+                            <Button type="reset">Reset</Button>         
                         </form>
+                        <br />
                         {this.state.alert}
                     </Col>
                 </Row>         

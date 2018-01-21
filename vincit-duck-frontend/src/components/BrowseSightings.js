@@ -26,6 +26,7 @@ class BrowseSightings extends Component{
         });
            
     }
+    /*function for sorting the sightings by date*/
     sortByDate = () => {
         if(this.state.sightings[0].dateTime > this.state.sightings[this.state.sightings.length-1].dateTime){
             this.setState({

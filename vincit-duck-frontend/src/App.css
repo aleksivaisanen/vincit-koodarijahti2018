@@ -5,13 +5,30 @@
     background-color: #fff !important;
 }
 .rdtTimeToggle{
-    background-color: #f3f3f3 !important;
+    background-color: #17a2b8 !important;
+}
+.rdtTimeToggle:hover{
+    background-color: #eeeeee !important;
 }
 .speciesLabel{
     font-weight: normal;
     margin-right:10px;
+    padding:0 5px;
+    border-radius:3px;
+    border-width: 1px;
 }
 
 .speciesInput{
     margin-right:5px !important;
+    
+}
+
+.errorLabel{
+    background-color: #f2dede;
+    color:#a94442; 
+    border-color: #ebccd1;
+}
+
+input:focus{
+    font-weight: bold;
 }
