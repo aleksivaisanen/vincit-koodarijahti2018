@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, FormGroup, Button, FormControl, ControlLabel } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup, Button, FormControl, ControlLabel, Alert } from 'react-bootstrap';
 import "../../node_modules/react-datetime/css/react-datetime.css";
 import moment from 'moment';
 import * as Datetime from 'react-datetime';
@@ -12,16 +12,19 @@ class AddSighting extends Component{
         
 		this.state = {
             description : '',
-            selectedSpecies : 'mallard' ,
+            selectedSpecies : '' ,
             count : '',
             time : '',
-            species : []
+            species : [],
+            alert : '',
+            alertVisible : true
         };
         
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleOptionChange = this.handleOptionChange.bind(this);
         this.handleDate = this.handleDate.bind(this);
+        this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
     }
     componentDidMount(){
         axios.get("http://localhost:8081/species")
@@ -52,16 +55,21 @@ class AddSighting extends Component{
     }
     handleReset = (e) =>{
         this.setState({
-            selectedSpecies : 'mallard',
+            selectedSpecies : '',
             description: '',
             time: '',
             count: ''
         });
         e.target.reset();
     }
+    handleAlertDismiss(){
+        this.setState({ alertVisible : false });
+    }
+
     handleSubmit(event){
         event.preventDefault();
-        if(this.state.description !== '' && this.state.count > 0 && moment(this.state.time).isValid()){
+        /*description can't be empty, duck count has to be over 0 and date can't be in the future  */
+        if(this.state.selectedSpecies !== '' && this.state.description !== '' && this.state.count > 0 && moment(this.state.time).isValid() && this.state.time < new Date()){
         
             axios.post('http://localhost:8081/sightings',
             {
@@ -69,6 +77,19 @@ class AddSighting extends Component{
                 description: this.state.description,
                 dateTime: moment(this.state.time).format(),
                 count: this.state.count
+            })
+            .then(function (response) {
+                if(response.statusText === 'OK'){
+                    this.setState({
+                        alert: <Alert bsStyle='success' onDismiss={this.handleAlertDismiss}>
+                                <p>Your sighting was received successfully!</p>
+                            </Alert>
+                    });
+                }
+                console.log(response);
+            }.bind(this))
+            .catch(function (error) {
+                console.log(error);
             });
 
             this.setState({
@@ -116,7 +137,7 @@ class AddSighting extends Component{
                                                 onChange ={this.handleOptionChange}
                                                 value = {specie.name}
                                                 />
-                                                {specie.name}
+                                                {specie.name.charAt(0).toUpperCase() + specie.name.substring(1, specie.name.length)}
                                                         
                                         </label>
                                     )
@@ -127,7 +148,8 @@ class AddSighting extends Component{
                                 <FormControl
                                     name='count' 
                                     type="number"
-                                    maxLength='6'
+                                    min='1'
+                                    max='999'
                                     placeholder="Enter the count"
                                     onChange={this.handleChange}
                                     />
@@ -140,6 +162,7 @@ class AddSighting extends Component{
                                 <ControlLabel>Description</ControlLabel>
                                 <FormControl
                                     name='description'
+                                    maxLength='100'
                                     type="text"
                                     placeholder="Enter description"
                                     onChange={this.handleChange}
@@ -152,6 +175,7 @@ class AddSighting extends Component{
                                 <Button type="reset">Reset</Button>         
                             </FormGroup>
                         </form>
+                        {this.state.alert}
                     </Col>
                 </Row>         
             </Grid>
