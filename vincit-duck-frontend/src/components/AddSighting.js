@@ -37,18 +37,10 @@ class AddSighting extends Component{
         const name = target.name;
         const value = target.value;
 
-        {/* fix this*/}
-        if(name === 'count' && this.state.count.length >= 4){
-            alert('Please insert a number betweeen 0 and 9999');
-        }
-        else if(name === 'description' && this.state.description.length >= 200){
-            alert('Maximum length of description is 200 characters!')
-        }
-        else{
         this.setState({
             [name]:value
         });
-    }
+    
     }
     handleOptionChange(event){
         this.setState({
@@ -95,7 +87,6 @@ class AddSighting extends Component{
     }
 
     render(){
-        require('react-datetime');
         require('moment/locale/fi');
         return(
             <Grid>
@@ -107,20 +98,13 @@ class AddSighting extends Component{
                             <FormGroup
                                 controlId="addSightingForm"
                             >
-                                <h1>Add sighting</h1>
+                                <h1>Add a sighting</h1>
 
-                                <ControlLabel>Description</ControlLabel>
-                                <FormControl
-                                    name='description'
-                                    type="text"
-                                    placeholder="Enter description"
-                                    onChange={this.handleChange}
-
-                                /> 
+                                
                                 <br />
                                 <ControlLabel>Species</ControlLabel>
                                 <br />
-                                
+                                {/*Valid species are fetched from the server and presented as radio buttons.*/}
                                 {this.state.species.map(function(specie){
                                     return (
                                         <label className='speciesLabel' key={specie.name}>
@@ -137,7 +121,7 @@ class AddSighting extends Component{
                                         </label>
                                     )
                                 }.bind(this))}
-
+                                <br />
                                 <br />
                                 <ControlLabel>Count</ControlLabel>
                                 <FormControl
@@ -153,7 +137,18 @@ class AddSighting extends Component{
                                 
                                 <Datetime onChange={this.handleDate} value= {this.state.time} inputProps={{placeholder: 'Time of sight' , readOnly:true }}/> 
                                 <br />
+                                <ControlLabel>Description</ControlLabel>
+                                <FormControl
+                                    name='description'
+                                    type="text"
+                                    placeholder="Enter description"
+                                    onChange={this.handleChange}
+
+                                /> 
+                                <br />
+
                                 <Button type="submit">Send sighting</Button>
+                                <span> </span>
                                 <Button type="reset">Reset</Button>         
                             </FormGroup>
                         </form>

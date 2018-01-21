@@ -11,7 +11,7 @@ class Header extends Component{
             <Navbar>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="#home">Vincit duckhunt</a>
+                        <a href="#home">Vincit Duck Hunt 2018</a>
                     </Navbar.Brand>
                 </Navbar.Header>
                 <Nav pullRight>
