@@ -69,7 +69,10 @@ class AddSighting extends Component{
             selectedSpecies : '',
             description: '',
             time: '',
-            count: ''
+            count: '',
+            descriptionValidation : null,
+            dateTimeValidation : null,
+            countValidation : null
         });
         e.target.reset();
     }
@@ -165,7 +168,10 @@ class AddSighting extends Component{
                     selectedSpecies : '',
                     description: '',
                     time: '',
-                    count: ''
+                    count: '',
+                    descriptionValidation : null,
+                    dateTimeValidation : null,
+                    countValidation : null
                 });
                 form.reset();
                 console.log(response);
