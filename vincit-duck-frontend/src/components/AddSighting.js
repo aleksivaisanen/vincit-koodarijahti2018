@@ -62,12 +62,7 @@ class AddSighting extends Component{
         
     }
     handleDate(date){
-        if(moment(date).isValid()){
-            this.setState({time : date});
-        }
-        else{
-            alert('Something went wrong with the date, please try again!');
-        }
+        this.setState({time : date});
     }
     handleReset = (e) =>{
         this.setState({
@@ -84,6 +79,7 @@ class AddSighting extends Component{
 
     /*handling all the input errors and giving the user feedback of their possible mistakes*/
     handleSubmit(event){
+        const form = event.target;
         this.setState({
             alert:''
         });
@@ -96,43 +92,60 @@ class AddSighting extends Component{
                 console.log(item.className)
             }
             this.setState({
-                alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
-                        <p>Please choose a species!</p>
-                    </Alert>
-            });
-        } 
-        else if(this.state.description === ''){
-            this.setState({ descriptionValidation : 'error',
-                            alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
-                                    <p>Description can't be empty!</p>
-                                    </Alert>
+                alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                            <p>Please choose a species!</p>
+                        </Alert>
             });
         }
-        else if(/[^a-zA-Z0-9-!?,.]/.test(this.state.description)){
-            this.setState({ descriptionValidation : 'error',
-                            alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
-                                    <p>Description can only contain alphanumeric characters or special characters <b>- ! ? , .</b></p>
-                                    </Alert>
+        else if(/[^0-9]/.test(this.state.count)){
+            this.setState({ 
+                countValidation : 'error',
+                alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                            <p>Count can only contain numbers!</p>
+                        </Alert>
             });
+        } 
+        else if(this.state.count <= 0 && this.state.count > 999){
+            this.setState({
+                countValidation:'error',
+                alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                                    <p>Count has to be over 0 and less than 1000!</p>
+                                    </Alert>
+            })
         }
         else if(this.state.time > new Date()){
             console.log(this.state.time < new Date())
             this.setState({
                 dateTimeValidation:'error',
-                alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
-                                    <p>Please check your date, date can't be in the future!</p>
-                                    </Alert>
+                alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                        <p>Please check your date, date can't be in the future!</p>
+                        </Alert>
             })
-        } 
-        else if(this.state.count <= 0){
+        }
+        else if(!(moment(this.state.time).isValid())){
             this.setState({
-                countValidation:'error',
-                alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
-                                    <p>Count can't be less or equals to 0.</p>
-                                    </Alert>
+                dateTimeValidation:'error',
+                alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                <p>Please check your date, date has to be in 'dd.mm.yyyy HH:mm' format!</p>
+                </Alert>
             })
         }  
-        
+        else if(this.state.description === '' || this.state.description.length > 100){
+            this.setState({ 
+                descriptionValidation : 'error',
+                alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                        <p>Description can't be empty or over 100 characters long!</p>
+                        </Alert>
+            });
+        }
+        else if(/[^a-zA-Z0-9-!?,.]/.test(this.state.description)){
+            this.setState({ 
+                descriptionValidation : 'error',
+                alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
+                        <p>Description can only contain alphanumeric characters or special characters <b>- ! ? , .</b></p>
+                        </Alert>
+            });
+        }
         else{
             axios.post('http://localhost:8081/sightings',
             {
@@ -155,8 +168,7 @@ class AddSighting extends Component{
                     time: '',
                     count: ''
                 });
-    
-                event.target.reset();
+                form.reset();
                 console.log(response);
             }.bind(this))
             .catch(function (error) {
