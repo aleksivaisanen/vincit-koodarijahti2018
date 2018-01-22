@@ -114,7 +114,6 @@ class AddSighting extends Component{
             })
         }
         else if(this.state.time > new Date()){
-            console.log(this.state.time < new Date())
             this.setState({
                 dateTimeValidation:'error',
                 alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
@@ -122,11 +121,11 @@ class AddSighting extends Component{
                         </Alert>
             })
         }
-        else if(!(moment(this.state.time).isValid())){
+        else if(!(moment(this.state.time, 'MMMM Do YYYY, HH:mm', true).isValid())){
             this.setState({
                 dateTimeValidation:'error',
                 alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
-                <p>Please check your date, date has to be in 'dd.mm.yyyy HH:mm' format!</p>
+                <p>Please check your date, date has to be in 'dd.mm.yyyy HH.mm' format!</p>
                 </Alert>
             })
         }  
