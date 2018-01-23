@@ -12,6 +12,7 @@ class BrowseSightings extends Component{
           species: [],
           glyph: <Glyphicon name='glyph1' glyph='menu-down' />
         };
+        this.sortByDate = this.sortByDate.bind(this);
       }
     
     componentDidMount() {
@@ -27,7 +28,7 @@ class BrowseSightings extends Component{
            
     }
     /*function for sorting the sightings by date*/
-    sortByDate = () => {
+    sortByDate(){
         if(this.state.sightings[0].dateTime > this.state.sightings[this.state.sightings.length-1].dateTime){
             this.setState({
                 sightings: this.state.sightings.sort(function(a,b){
@@ -57,7 +58,7 @@ class BrowseSightings extends Component{
                 <Row className="show-grid">
                 
                 <Col xs={12}>    
-                    <Table striped>
+                    <Table striped responsive>
                         <thead>
                             <tr>
                             <th>

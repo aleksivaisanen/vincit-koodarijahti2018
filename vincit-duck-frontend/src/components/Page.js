@@ -10,9 +10,10 @@ class Page extends Component{
         this.state = {
           currentPage : 'home'      
         };   
+        this.handleChange = this.handleChange.bind(this);
     }
     
-    handleChange = (page) =>{
+    handleChange(page){
         this.setState({
             currentPage:page
         });

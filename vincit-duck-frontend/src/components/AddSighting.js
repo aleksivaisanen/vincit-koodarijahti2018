@@ -26,6 +26,7 @@ class AddSighting extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleOptionChange = this.handleOptionChange.bind(this);
         this.handleDate = this.handleDate.bind(this);
+        this.handleReset = this.handleReset.bind(this);
         this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
     }
     componentDidMount(){
@@ -64,7 +65,7 @@ class AddSighting extends Component{
     handleDate(date){
         this.setState({time : date});
     }
-    handleReset = (e) =>{
+    handleReset(e){
         this.setState({
             selectedSpecies : '',
             description: '',
