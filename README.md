@@ -23,4 +23,4 @@ To start server run
 $ npm start
 ```
 
-and there you go, now you can test submitting your own sightings!
+and there you go, now you can try submitting your own sightings!
