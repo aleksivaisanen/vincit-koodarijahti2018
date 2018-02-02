@@ -1,14 +1,15 @@
 
 .wrapper{
     min-height: 100vh; /* will cover the 100% of viewport */
-    overflow: hidden;
     display: block;
+    overflow-x:hidden;
+    overflow-y: visible;
     position: relative;
-    padding-bottom: 150px; /* height of your footer */
+    padding-bottom: 150px;
 }
 .container{
     min-width: 320px;
-    overflow-x:scroll;
+
 }
 .img-center{
     margin:0 auto;
@@ -17,7 +18,7 @@
     background-color: #fff !important;
 }
 .rdtTimeToggle{
-    background-color: #17a2b8 !important;
+    background-color: #c47418 !important;
 }
 .rdtTimeToggle:hover{
     background-color: #eeeeee !important;

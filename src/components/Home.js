@@ -6,6 +6,7 @@ class Home extends Component{
     render(){
         
         return(
+            /*home view*/
             <Grid className='white-bg'>
                 <h1>Vincit Duck Hunt 2018</h1>
                 <br/>

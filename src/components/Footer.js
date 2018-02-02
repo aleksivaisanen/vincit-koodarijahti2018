@@ -5,7 +5,8 @@ import '../App.css';
 class Footer extends Component{
     render(){
         
-        return( 
+        return(
+            /*basic footer*/ 
             <footer>
                 <Grid>
                     <img alt='dog' src={require('../images/koodarijahti_dog.png')} className="img-dog img-responsive" />

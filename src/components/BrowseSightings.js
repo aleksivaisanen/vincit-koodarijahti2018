@@ -19,8 +19,8 @@ class BrowseSightings extends Component{
         axios.get('http://localhost:8081/sightings')
         .then(res => {
           const sights = res.data;
-          this.setState({ sightings : 
-            sights.sort(function(a,b){
+          /*sightings from server are automatically sorted before they are presented to the user*/
+          this.setState({ sightings : sights.sort(function(a,b){
                 return new Date(b.dateTime) - new Date(a.dateTime);
             })
         });
@@ -32,6 +32,7 @@ class BrowseSightings extends Component{
                 sightings: this.state.sightings.sort(function(a,b){
                     return new Date(a.dateTime) - new Date(b.dateTime);
                 }),
+                /*glyphicon is changed when user sorts the data*/
                 glyph: <Glyphicon name='glyph1' glyph='menu-up' />
             });
         }
@@ -47,6 +48,7 @@ class BrowseSightings extends Component{
 
 
     render(){
+        /*using en-gb locale with the dates*/
         require('moment/locale/en-gb');
 
 

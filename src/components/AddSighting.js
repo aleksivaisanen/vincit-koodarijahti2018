@@ -25,6 +25,7 @@ class AddSighting extends Component{
     componentDidMount(){
         /*server must run in localhost and port 8081 or this url must be changed*/
         axios.get('http://localhost:8081/species')
+        /*using axios for handling get and post request's*/
         .then(res => {
           const specie = res.data;
           this.setState({ species : specie });
@@ -33,6 +34,7 @@ class AddSighting extends Component{
     }
     
     handleChange = (event) =>{
+        /*function for clearing alert's and validation messages when typing in input boxes*/
         const target = event.target;
         const name = target.name;
         const value = target.value;
@@ -46,21 +48,25 @@ class AddSighting extends Component{
         });
     
     }
+
     handleOptionChange = (event) =>{
         this.setState({
             selectedSpecies:event.target.value,
             alert: ''
         });
-        /* TODO */
+        /* this clears the error message if the class 'errorLabel' has been given to label*/
         for(const item of document.getElementsByClassName('speciesLabel')){
             item.className='speciesLabel'
         }
         
     }
     handleDate = (date) => {
+        /*sets chosen date to state*/
         this.setState({time : date});
     }
+
     handleReset = (e) => {
+        /*resets the form and states*/
         this.setState({
             selectedSpecies : '',
             description: '',
@@ -73,11 +79,13 @@ class AddSighting extends Component{
         e.target.reset();
     }
     handleAlertDismiss = () => {
+        /*clears the alert state*/
         this.setState({ alert : '' });
     }
 
-    /*handling all the input errors and giving the user feedback of their possible mistakes*/
+    
     handleSubmit = (event) =>{
+        /*handling all the input errors and giving the user feedback of their possible mistakes*/
         const form = event.target;
         this.setState({
             alert:''
@@ -85,6 +93,7 @@ class AddSighting extends Component{
         event.preventDefault();
         /*description can't be empty, duck count has to be over 0 and date can't be in the future  */
         if(this.state.selectedSpecies === ''){
+            /*adding the class 'errorLabel' to speciesLabel elements*/
             const list = document.getElementsByClassName('speciesLabel');
             for(const item of list){
                 item.className='speciesLabel errorLabel'
@@ -95,6 +104,7 @@ class AddSighting extends Component{
                         </Alert>
             });
         }
+        /*validating number input*/
         else if(/[^0-9]/.test(this.state.count)){
             this.setState({ 
                 countValidation : 'error',
@@ -102,7 +112,8 @@ class AddSighting extends Component{
                             <p>Count can only contain numbers!</p>
                         </Alert>
             });
-        } 
+        }
+        /*validating number input*/ 
         else if((this.state.count <= 0 && this.state.count > 999) || this.state.count === '') {
             this.setState({
                 countValidation:'error',
@@ -111,6 +122,7 @@ class AddSighting extends Component{
                                     </Alert>
             })
         }
+        /*validating date input, date has to be in the past, future sightings aren't allowed*/
         else if(this.state.time > new Date()){
             this.setState({
                 dateTimeValidation:'error',
@@ -119,6 +131,7 @@ class AddSighting extends Component{
                         </Alert>
             })
         }
+        /*validating date format*/
         else if(!(moment(this.state.time, 'MMMM Do YYYY, HH:mm', true).isValid())){
             this.setState({
                 dateTimeValidation:'error',
@@ -127,6 +140,7 @@ class AddSighting extends Component{
                 </Alert>
             })
         }  
+        /*validating description's length*/
         else if(this.state.description === '' || this.state.description.length > 100){
             this.setState({ 
                 descriptionValidation : 'error',
@@ -135,6 +149,7 @@ class AddSighting extends Component{
                         </Alert>
             });
         }
+        /*validating description*/
         else if(/[^a-öA-Ö0-9-!?,.\s]/.test(this.state.description)){
             this.setState({ 
                 descriptionValidation : 'error',
@@ -143,7 +158,9 @@ class AddSighting extends Component{
                         </Alert>
             });
         }
+        /*if all is fine, sending post request using axios*/
         else{
+            /*server must run in localhost and port 8081 or this url must be changed*/
             axios.post('http://localhost:8081/sightings',
             {
                 species: this.state.selectedSpecies,
@@ -159,6 +176,7 @@ class AddSighting extends Component{
                             </Alert>
                     });
                 }
+                /*resetting the form after succesful submit*/
                 this.setState({
                     selectedSpecies : '',
                     description: '',
@@ -171,6 +189,7 @@ class AddSighting extends Component{
                 form.reset();
             })
             .catch((error) =>{
+                /*catching errors and informing the user about the error with the alert*/
                 this.setState({
                     alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
                             <p>Something went wrong, please try again.</p>
@@ -184,6 +203,7 @@ class AddSighting extends Component{
     
 
     render(){
+        /*using en-gb locale with the dates*/
         require('moment/locale/en-gb');
         
         /*this disables all the future dates from date picker*/

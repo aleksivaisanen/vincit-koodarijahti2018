@@ -4,6 +4,7 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap'
 class Header extends Component{
    
     changePage = (page) =>{
+        /*page navigation is done with props*/
         this.props.changePage(page);
     }
     render(){

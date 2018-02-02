@@ -9,11 +9,13 @@ class Page extends Component{
     constructor(props){
         super(props);
         this.state = {
+        /*default view is home*/
           currentPage : 'home'      
         };   
     }
     
     handleChange = (page) =>{
+        /*page navigation is done using states and props*/
         this.setState({
             currentPage:page
         });
