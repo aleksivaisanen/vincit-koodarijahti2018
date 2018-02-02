@@ -1,8 +1,6 @@
 # My entry to Vincit koodarijahti 2018
 Finished 2.2.2018
 
-Made by Aleksi Väisänen
-
 Made with npm version 5.5.1 and Node.js version 8.9.1
 
 ## Requirements
