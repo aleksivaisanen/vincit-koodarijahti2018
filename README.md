@@ -18,7 +18,7 @@ $ npm install
 
 ## Run
 
-To start server run 
+To start development server run 
 
 ```
 $ npm start
