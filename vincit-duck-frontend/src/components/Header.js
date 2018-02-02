@@ -3,7 +3,7 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap'
 
 class Header extends Component{
    
-    changePage(page){
+    changePage = (page) =>{
         this.props.changePage(page);
     }
     render(){

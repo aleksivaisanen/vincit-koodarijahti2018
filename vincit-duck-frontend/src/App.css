@@ -1,3 +1,15 @@
+
+.wrapper{
+    min-height: 100vh; /* will cover the 100% of viewport */
+    overflow: hidden;
+    display: block;
+    position: relative;
+    padding-bottom: 150px; /* height of your footer */
+}
+.container{
+    min-width: 320px;
+    overflow-x:scroll;
+}
 .img-center{
     margin:0 auto;
 }
@@ -31,4 +43,27 @@
 
 input:focus{
     font-weight: bold;
+}
+
+footer{
+    position:absolute;
+    bottom: 0;
+    width:100%;
+    background:#eeeeee;
+    height:100px;
+    border-top: 1px solid #e7e7e7;
+}
+.img-dog{
+    position:absolute;
+    bottom:100px;
+    z-index:-1;
+}
+.main-text{
+    font-size:1.2em;
+}
+.white-bg{
+    background-color:rgba(255,255,255,0.8);
+}
+.table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #fff;
 }

@@ -6,24 +6,24 @@ class Home extends Component{
     render(){
         
         return(
-            <Grid>
+            <Grid className='white-bg'>
                 <h1>Vincit Duck Hunt 2018</h1>
+                <br/>
                 <Row>
-                    <Col xs={12} md={8}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-                    Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
-                    Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. 
-                    Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. 
-                    In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. 
-                    Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. 
-                    Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. 
-                    Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. 
-                    Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
+                    <Col xs={12} className='main-text'>
+                    <p>
+                    Vincit Duck Hunt 2018 has begun! Here you can add your sightings to our database and compare them with previous sightings.
+                    </p>
+                    <p>
+                    In the '<b>Add a sighting</b>' section you can add your newest sightings by simply filling the form with the required information.
+                    In the '<b>Browse sightings</b>' section you can view previous sightings that have been submitted to our database.
+                    Sightings can also be sorted by date, so comparison between previous sightings is now even easier!
+                    </p>
+                    <h3>Happy hunting!</h3>
+                    
                     </Col>
-                    <Col xs={12} md={4}>
-                        <img src={require('../images/koodarijahti_seal.png')} alt="koodarijahti logo" className="img-responsive img-center" />
-                    </Col> 
                 </Row>
+                
             </Grid>
         );
     }

@@ -21,16 +21,10 @@ class AddSighting extends Component{
             dateTimeValidation : null,
             countValidation : null
         };
-        
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleOptionChange = this.handleOptionChange.bind(this);
-        this.handleDate = this.handleDate.bind(this);
-        this.handleReset = this.handleReset.bind(this);
-        this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
     }
     componentDidMount(){
-        axios.get("http://localhost:8081/species")
+        /*server must run in localhost and port 8081 or this url must be changed*/
+        axios.get('http://localhost:8081/species')
         .then(res => {
           const specie = res.data;
           this.setState({ species : specie });
@@ -38,7 +32,7 @@ class AddSighting extends Component{
 
     }
     
-    handleChange(event){
+    handleChange = (event) =>{
         const target = event.target;
         const name = target.name;
         const value = target.value;
@@ -52,20 +46,21 @@ class AddSighting extends Component{
         });
     
     }
-    handleOptionChange(event){
+    handleOptionChange = (event) =>{
         this.setState({
             selectedSpecies:event.target.value,
             alert: ''
         });
+        /* TODO */
         for(const item of document.getElementsByClassName('speciesLabel')){
             item.className='speciesLabel'
         }
         
     }
-    handleDate(date){
+    handleDate = (date) => {
         this.setState({time : date});
     }
-    handleReset(e){
+    handleReset = (e) => {
         this.setState({
             selectedSpecies : '',
             description: '',
@@ -77,12 +72,12 @@ class AddSighting extends Component{
         });
         e.target.reset();
     }
-    handleAlertDismiss(){
+    handleAlertDismiss = () => {
         this.setState({ alert : '' });
     }
 
     /*handling all the input errors and giving the user feedback of their possible mistakes*/
-    handleSubmit(event){
+    handleSubmit = (event) =>{
         const form = event.target;
         this.setState({
             alert:''
@@ -93,7 +88,6 @@ class AddSighting extends Component{
             const list = document.getElementsByClassName('speciesLabel');
             for(const item of list){
                 item.className='speciesLabel errorLabel'
-                console.log(item.className)
             }
             this.setState({
                 alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
@@ -109,7 +103,7 @@ class AddSighting extends Component{
                         </Alert>
             });
         } 
-        else if(this.state.count <= 0 && this.state.count > 999){
+        else if((this.state.count <= 0 && this.state.count > 999) || this.state.count === '') {
             this.setState({
                 countValidation:'error',
                 alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
@@ -141,7 +135,7 @@ class AddSighting extends Component{
                         </Alert>
             });
         }
-        else if(/[^a-zA-Z0-9-!?,.]/.test(this.state.description)){
+        else if(/[^a-öA-Ö0-9-!?,.\s]/.test(this.state.description)){
             this.setState({ 
                 descriptionValidation : 'error',
                 alert:  <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
@@ -157,7 +151,7 @@ class AddSighting extends Component{
                 dateTime: moment(this.state.time).format(),
                 count: this.state.count
             })
-            .then(function (response) {
+            .then((response) =>{
                 if(response.statusText === 'OK'){
                     this.setState({
                         alert: <Alert bsStyle='success' onDismiss={this.handleAlertDismiss}>
@@ -175,23 +169,22 @@ class AddSighting extends Component{
                     countValidation : null
                 });
                 form.reset();
-                console.log(response);
-            }.bind(this))
-            .catch(function (error) {
+            })
+            .catch((error) =>{
                 this.setState({
                     alert: <Alert bsStyle='danger' onDismiss={this.handleAlertDismiss}>
                             <p>Something went wrong, please try again.</p>
                         </Alert>
                 });
-                console.log(error)
-            }.bind(this));
+                console.error(error)
+            });
         }
     }
 
     
 
     render(){
-        require('moment/locale/fi');
+        require('moment/locale/en-gb');
         
         /*this disables all the future dates from date picker*/
         var today = Datetime.moment();
@@ -200,7 +193,7 @@ class AddSighting extends Component{
         };
 
         return(
-            <Grid>
+            <Grid className='white-bg'>
                 <Row>
                     <Col xs={12}>
                         <form 
@@ -211,7 +204,7 @@ class AddSighting extends Component{
                                 <ControlLabel>Species</ControlLabel>
                                 <br />
                                 {/*Valid species are fetched from the server and presented as radio buttons.*/}
-                                {this.state.species.map(function(specie){
+                                {this.state.species.map( (specie) => {
                                     return (
                                         <label className='speciesLabel' key={specie.name}>
                                             <input 
@@ -225,7 +218,7 @@ class AddSighting extends Component{
                                                 {specie.name.charAt(0).toUpperCase() + specie.name.substring(1, specie.name.length)}         
                                         </label>
                                     )
-                                }.bind(this))}
+                                })}
                             </FormGroup>
                             <FormGroup validationState={this.state.countValidation}>
                             <ControlLabel>Count</ControlLabel>

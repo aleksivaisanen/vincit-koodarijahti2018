@@ -3,6 +3,7 @@ import Header from './Header';
 import BrowseSightings from './BrowseSightings';
 import Home from './Home';
 import AddSighting from './AddSighting';
+import Footer from './Footer';
 
 class Page extends Component{
     constructor(props){
@@ -10,10 +11,9 @@ class Page extends Component{
         this.state = {
           currentPage : 'home'      
         };   
-        this.handleChange = this.handleChange.bind(this);
     }
     
-    handleChange(page){
+    handleChange = (page) =>{
         this.setState({
             currentPage:page
         });
@@ -32,9 +32,10 @@ class Page extends Component{
             page = <BrowseSightings />;
         }  
         return (
-            <div>
+            <div className='wrapper'>
                 <Header currentPage = {this.state.currentPage} changePage = {this.handleChange}/>     
                 {page}
+                <Footer />
             </div>
         );
         
